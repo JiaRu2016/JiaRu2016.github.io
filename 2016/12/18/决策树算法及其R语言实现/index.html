@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="R,机器学习," />
 
 
 
@@ -84,43 +84,16 @@
 
 
 
-<meta name="description" content="决策树算法及其R语言实现贾茹  
-本文是 周志华《机器学习》第四章：决策树 的学习笔记
-决策树算法算法基本流程伪代码见书74页，图4.2。注意点：
-
-决策树生成是一个递归的过程
-三个递归返回情形
-
-
-情形(1)很简单，就是当一个节点上label全都一样时，就标记为叶节点。
-情形(2)是说，现有的节点上属性集$A$全都相同，那么就无法划分，标记为叶节点。叶节点的label根据当前节点的后验分布生成。">
+<meta name="description" content="本文是 周志华《机器学习》第四章：决策树 的学习笔记">
 <meta property="og:type" content="article">
 <meta property="og:title" content="决策树算法及其R语言实现">
 <meta property="og:url" content="http://yoursite.com/2016/12/18/决策树算法及其R语言实现/index.html">
 <meta property="og:site_name" content="JiaRu's blog">
-<meta property="og:description" content="决策树算法及其R语言实现贾茹  
-本文是 周志华《机器学习》第四章：决策树 的学习笔记
-决策树算法算法基本流程伪代码见书74页，图4.2。注意点：
-
-决策树生成是一个递归的过程
-三个递归返回情形
-
-
-情形(1)很简单，就是当一个节点上label全都一样时，就标记为叶节点。
-情形(2)是说，现有的节点上属性集$A$全都相同，那么就无法划分，标记为叶节点。叶节点的label根据当前节点的后验分布生成。">
-<meta property="og:updated_time" content="2016-12-18T09:45:10.000Z">
+<meta property="og:description" content="本文是 周志华《机器学习》第四章：决策树 的学习笔记">
+<meta property="og:updated_time" content="2016-12-22T11:29:07.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="决策树算法及其R语言实现">
-<meta name="twitter:description" content="决策树算法及其R语言实现贾茹  
-本文是 周志华《机器学习》第四章：决策树 的学习笔记
-决策树算法算法基本流程伪代码见书74页，图4.2。注意点：
-
-决策树生成是一个递归的过程
-三个递归返回情形
-
-
-情形(1)很简单，就是当一个节点上label全都一样时，就标记为叶节点。
-情形(2)是说，现有的节点上属性集$A$全都相同，那么就无法划分，标记为叶节点。叶节点的label根据当前节点的后验分布生成。">
+<meta name="twitter:description" content="本文是 周志华《机器学习》第四章：决策树 的学习笔记">
 
 
 
@@ -338,8 +311,7 @@
       
 
       
-        <h1 id="决策树算法及其R语言实现"><a href="#决策树算法及其R语言实现" class="headerlink" title="决策树算法及其R语言实现"></a>决策树算法及其R语言实现</h1><p>贾茹  </p>
-<p>本文是 <em>周志华《机器学习》第四章：决策树</em> 的学习笔记</p>
+        <p>本文是 <em>周志华《机器学习》第四章：决策树</em> 的学习笔记<br><a id="more"></a></p>
 <h2 id="决策树算法"><a href="#决策树算法" class="headerlink" title="决策树算法"></a>决策树算法</h2><h3 id="算法基本流程"><a href="#算法基本流程" class="headerlink" title="算法基本流程"></a>算法基本流程</h3><p>伪代码见书74页，图4.2。注意点：</p>
 <ul>
 <li>决策树生成是一个<strong>递归</strong>的过程</li>
@@ -358,7 +330,7 @@
 <li>基尼指数(Gini index)。 CART算法</li>
 </ul>
 <p>为了理解前两个指标，首先要引入<strong>信息熵(information entropy)</strong>的概念</p>
-<p>信息熵是衡量一个集合纯度的最常用的指标。定义是<br>$$ Ent(D) = - \sum{k=1}{|\gamma|} p_k \log_2 p_k $$<br>$Ent(D)$越小，纯度越高。</p>
+<p>信息熵是衡量一个集合纯度的最常用的指标。定义是<br>$$ Ent(D) = - \sum_{k=1}^{|\gamma|} p_k \log_2 p_k $$<br>$Ent(D)$越小，纯度越高。</p>
 <blockquote>
 <p>可汗学院的<a href="https://www.khanacademy.org/computing/computer-science/informationtheory/moderninfotheory/v/information-entropy" target="_blank" rel="external">这个视频</a></p>
 </blockquote>
@@ -372,10 +344,13 @@
 <p>怎么理解？</p>
 <p><strong>（全样本的信息熵）与（按属性$a$划分的$V$个子样本的信息熵——以子样本样本容量为权重——的加权平均）之差</strong></p>
 <p>信息增益指标存在一个问题：偏好可取值数目较多的属性。举个栗子，如果把“编号”也作为一个属性，那么在决策树的而第一个节点就会选择按照编号属性划分，划分和每个子节点信息熵都为0（纯度为100%），但这显然是荒唐的。怎么调整？引入“信息增益率”指标：</p>
-<p>$$GainRatio(D, a) = \frac{Gain(D, a)}{IV(D, a)}$$<br>$$ where\ IV(D, a) = - \sum_{v=1}^{V} \frac{|D_v|}{|D|} \log_2 \frac{|D_v|}{|D|}$$</p>
+<p>$$GainRatio(D, a) = \frac{Gain(D, a)}{IV(D, a)}$$</p>
+<p>$$ where\ IV(D, a) = - \sum_{v=1}^{V} \frac{|D_v|}{|D|} \log_2 \frac{|D_v|}{|D|}$$</p>
 <p>其中$IV(D, a)$称为属性$a$的 Intrinsic Value。$a$的可取值数目越多，$IV(D, a)$越大。其实通过观察发现，<code>IV(D, a) = entropy(D$a)</code></p>
 <p>另外还有一个指标：基尼指数（跟常说的衡量收入不平等的基尼系数算法似乎不一样？）多数文献上称作基尼不纯度。</p>
-<p>$$ Gini(D) = \sum<em>{k=1}^{|\gamma|} \sum</em>{k^\prime \neq k} p_{k^\prime} p<em>k = 1 - \sum</em>{k=1}^{|\gamma|} p<em>k^2 $$<br>$$ GiniIndex(D, a) = \sum</em>{v=1}{V} \frac{|D_v|}{|D|} Gini(D_v)$$<br>类似的，$GiniIndex$可以理解为<strong>按属性$a$划分的$V$个子样本的基尼指数——以子样本样本容量为权重——的加权平均</strong></p>
+<p>$$ Gini(D) = \sum<em>{k=1}^{|\gamma|} \sum</em>{k^\prime \neq k} p_{k^\prime} p<em>k = 1 - \sum</em>{k=1}^{|\gamma|} p_k^2 $$</p>
+<p>$$ GiniIndex(D, a) = \sum_{v=1}{V} \frac{|D_v|}{|D|} Gini(D_v)$$</p>
+<p>类似的，$GiniIndex$可以理解为<strong>按属性$a$划分的$V$个子样本的基尼指数——以子样本样本容量为权重——的加权平均</strong></p>
 <h2 id="R语言实现"><a href="#R语言实现" class="headerlink" title="R语言实现"></a>R语言实现</h2><h3 id="读取数据"><a href="#读取数据" class="headerlink" title="读取数据"></a>读取数据</h3><p>（数据来自 <a href="http://blog.csdn.net/thither_shore/article/details/52331077）" target="_blank" rel="external">http://blog.csdn.net/thither_shore/article/details/52331077）</a></p>
 <figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">rm(list = ls())</div><div class="line"></div><div class="line"><span class="keyword">library</span>(data.table)</div><div class="line"><span class="keyword">library</span>(rlist)</div><div class="line"><span class="keyword">library</span>(pipeR)</div><div class="line"></div><div class="line">D &lt;- fread(input = <span class="string">"watermelon.csv"</span>, header = <span class="literal">TRUE</span>, stringsAsFactors = <span class="literal">TRUE</span>)</div><div class="line">D[, 密度 := <span class="literal">NULL</span>]</div><div class="line">D[, 含糖率 := <span class="literal">NULL</span>]</div><div class="line">setnames(D, old = <span class="string">"好瓜"</span>, new = <span class="string">"label"</span>)</div><div class="line">D</div></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">##     编号 色泽 根蒂 敲声 纹理 脐部 触感 label</div><div class="line">##  1:    1 青绿 蜷缩 浊响 清晰 凹陷 硬滑    是</div><div class="line">##  2:    2 乌黑 蜷缩 沉闷 清晰 凹陷 硬滑    是</div><div class="line">##  3:    3 乌黑 蜷缩 浊响 清晰 凹陷 硬滑    是</div><div class="line">##  4:    4 青绿 蜷缩 沉闷 清晰 凹陷 硬滑    是</div><div class="line">##  5:    5 浅白 蜷缩 浊响 清晰 凹陷 硬滑    是</div><div class="line">##  6:    6 青绿 稍蜷 浊响 清晰 稍凹 软粘    是</div><div class="line">##  7:    7 乌黑 稍蜷 浊响 稍糊 稍凹 软粘    是</div><div class="line">##  8:    8 乌黑 稍蜷 浊响 清晰 稍凹 硬滑    是</div><div class="line">##  9:    9 乌黑 稍蜷 沉闷 稍糊 稍凹 硬滑    否</div><div class="line">## 10:   10 青绿 硬挺 清脆 清晰 平坦 软粘    否</div><div class="line">## 11:   11 浅白 硬挺 清脆 模糊 平坦 硬滑    否</div><div class="line">## 12:   12 浅白 蜷缩 浊响 模糊 平坦 软粘    否</div><div class="line">## 13:   13 青绿 稍蜷 浊响 稍糊 凹陷 硬滑    否</div><div class="line">## 14:   14 浅白 稍蜷 沉闷 稍糊 凹陷 硬滑    否</div><div class="line">## 15:   15 乌黑 稍蜷 浊响 清晰 稍凹 软粘    否</div><div class="line">## 16:   16 浅白 蜷缩 浊响 模糊 平坦 硬滑    否</div><div class="line">## 17:   17 青绿 蜷缩 沉闷 稍糊 稍凹 硬滑    否</div></pre></td></tr></table></figure>
@@ -419,6 +394,14 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/R/" rel="tag"># R</a>
+          
+            <a href="/tags/机器学习/" rel="tag"># 机器学习</a>
+          
+        </div>
+      
 
       
         <div class="post-nav">
@@ -433,6 +416,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/12/27/BP神经网络的R语言实现/" rel="prev" title="BP神经网络的R语言实现">
+                BP神经网络的R语言实现 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -500,13 +487,20 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-count">3</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
 
           
 
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
           
 
         </nav>
@@ -538,7 +532,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#决策树算法及其R语言实现"><span class="nav-number">1.</span> <span class="nav-text">决策树算法及其R语言实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#决策树算法"><span class="nav-number">1.1.</span> <span class="nav-text">决策树算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#算法基本流程"><span class="nav-number">1.1.1.</span> <span class="nav-text">算法基本流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最优划分属性"><span class="nav-number">1.1.2.</span> <span class="nav-text">最优划分属性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#R语言实现"><span class="nav-number">1.2.</span> <span class="nav-text">R语言实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#读取数据"><span class="nav-number">1.2.1.</span> <span class="nav-text">读取数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定义选择最优划分属性的函数-SelectAttr"><span class="nav-number">1.2.2.</span> <span class="nav-text">定义选择最优划分属性的函数 SelectAttr()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#递归生成决策树"><span class="nav-number">1.2.3.</span> <span class="nav-text">递归生成决策树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试"><span class="nav-number">1.2.4.</span> <span class="nav-text">测试</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#决策树算法"><span class="nav-number">1.</span> <span class="nav-text">决策树算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#算法基本流程"><span class="nav-number">1.1.</span> <span class="nav-text">算法基本流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最优划分属性"><span class="nav-number">1.2.</span> <span class="nav-text">最优划分属性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#R语言实现"><span class="nav-number">2.</span> <span class="nav-text">R语言实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#读取数据"><span class="nav-number">2.1.</span> <span class="nav-text">读取数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定义选择最优划分属性的函数-SelectAttr"><span class="nav-number">2.2.</span> <span class="nav-text">定义选择最优划分属性的函数 SelectAttr()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#递归生成决策树"><span class="nav-number">2.3.</span> <span class="nav-text">递归生成决策树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试"><span class="nav-number">2.4.</span> <span class="nav-text">测试</span></a></li></ol></li></ol></div>
             
 
           </div>

@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>u盘安装ubuntu笔记：原理&amp;实践 | JiaRu&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="LinuxMac我爱折腾" />
+  
+  
+  
+  
+  <meta name="description" content="Intro最近打算开始折腾Linux系统，第一步当然是自己动手安装Ubuntu了。想把安装过程和涉及到的基本原理记录下来以备日后查询，于是有了这篇文章。
+要在一台电脑上安装Ubuntu系统，总的来说分为两步：第一步是制作Ubuntu安装盘，第二步是使用做好的安装盘安装Ubuntu系统到一台电脑上。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="U盘安装Ubuntu笔记：原理&实践">
+<meta property="og:url" content="http://yoursite.com/2017/02/02/U盘安装Ubuntu笔记：原理-实践/index.html">
+<meta property="og:site_name" content="JiaRu's blog">
+<meta property="og:description" content="Intro最近打算开始折腾Linux系统，第一步当然是自己动手安装Ubuntu了。想把安装过程和涉及到的基本原理记录下来以备日后查询，于是有了这篇文章。
+要在一台电脑上安装Ubuntu系统，总的来说分为两步：第一步是制作Ubuntu安装盘，第二步是使用做好的安装盘安装Ubuntu系统到一台电脑上。">
+<meta property="og:image" content="http://yoursite.com/2017/02/02/U盘安装Ubuntu笔记：原理-实践/1.png">
+<meta property="og:image" content="http://yoursite.com/2017/02/02/U盘安装Ubuntu笔记：原理-实践/2.png">
+<meta property="og:image" content="http://yoursite.com/2017/02/02/U盘安装Ubuntu笔记：原理-实践/3.png">
+<meta property="og:image" content="http://yoursite.com/2017/02/02/U盘安装Ubuntu笔记：原理-实践/4.png">
+<meta property="og:image" content="http://yoursite.com/2017/02/02/U盘安装Ubuntu笔记：原理-实践/install/1.jpg">
+<meta property="og:image" content="http://yoursite.com/2017/02/02/U盘安装Ubuntu笔记：原理-实践/install/2.jpg">
+<meta property="og:image" content="http://yoursite.com/2017/02/02/U盘安装Ubuntu笔记：原理-实践/install/3.jpg">
+<meta property="og:image" content="http://yoursite.com/2017/02/02/U盘安装Ubuntu笔记：原理-实践/install/4.jpg">
+<meta property="og:image" content="http://yoursite.com/2017/02/02/U盘安装Ubuntu笔记：原理-实践/install/5.jpg">
+<meta property="og:image" content="http://yoursite.com/2017/02/02/U盘安装Ubuntu笔记：原理-实践/install/6.jpg">
+<meta property="og:image" content="http://yoursite.com/2017/02/02/U盘安装Ubuntu笔记：原理-实践/install/7.jpg">
+<meta property="og:image" content="http://yoursite.com/2017/02/02/U盘安装Ubuntu笔记：原理-实践/install/8.jpg">
+<meta property="og:image" content="http://yoursite.com/2017/02/02/U盘安装Ubuntu笔记：原理-实践/install/9.jpg">
+<meta property="og:image" content="http://yoursite.com/2017/02/02/U盘安装Ubuntu笔记：原理-实践/install/10.jpg">
+<meta property="og:updated_time" content="2017-02-04T03:57:37.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="U盘安装Ubuntu笔记：原理&实践">
+<meta name="twitter:description" content="Intro最近打算开始折腾Linux系统，第一步当然是自己动手安装Ubuntu了。想把安装过程和涉及到的基本原理记录下来以备日后查询，于是有了这篇文章。
+要在一台电脑上安装Ubuntu系统，总的来说分为两步：第一步是制作Ubuntu安装盘，第二步是使用做好的安装盘安装Ubuntu系统到一台电脑上。">
+<meta name="twitter:image" content="http://yoursite.com/2017/02/02/U盘安装Ubuntu笔记：原理-实践/1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="JiaRu&#39;s blog" type="application/atom+xml">
+  
+  <link rel="icon" href="/myimg/caonima.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" ><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+  
+
+</head>
+
+<body>
+  
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="border-width: 0;">
+                <p>JiaRu&#39;s blog</p>
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Startseite</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archive</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Kategorien</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Schreib etwas..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Beiträge',
+            PAGES: 'Seiten',
+            CATEGORIES: 'Kategorien',
+            TAGS: 'Tags',
+            UNTITLED: '(Unbenannt)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-U盘安装Ubuntu笔记：原理-实践" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      U盘安装Ubuntu笔记：原理&amp;实践
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/02/02/U盘安装Ubuntu笔记：原理-实践/" class="article-date">
+	  <time datetime="2017-02-02T04:14:57.000Z" itemprop="datePublished">2017-02-02</time>
+	</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h2><p>最近打算开始折腾Linux系统，第一步当然是自己动手安装Ubuntu了。想把安装过程和涉及到的基本原理记录下来以备日后查询，于是有了这篇文章。</p>
+<p>要在一台电脑上安装Ubuntu系统，总的来说分为两步：第一步是制作Ubuntu安装盘，第二步是使用做好的安装盘安装Ubuntu系统到一台电脑上。</p>
+<a id="more"></a>
+<h2 id="制作Ubuntu安装U盘（Mac命令行方式）"><a href="#制作Ubuntu安装U盘（Mac命令行方式）" class="headerlink" title="制作Ubuntu安装U盘（Mac命令行方式）"></a>制作Ubuntu安装U盘（Mac命令行方式）</h2><p>这一步的目的是要把Ubuntu系统烧录到U盘中。这个制作好的启动盘可以多次用来装系统，因此建议保留这个U盘，万一将来一不小心<code>rm -rf</code>了，就可以直接用它来重装系统。也可以方便的给其他人的电脑装。</p>
+<p>所以其实这一步不是必须的，你可以直接在技术群里吼一声“谁有Ubuntu启动U盘借我用下“或者干脆淘宝搜”Ubuntu系统U盘“，就可以跳过这一步了。。。这里我还是打算自己制作。</p>
+<p>不同操作系统下制作Ubuntu启动盘的方式不同。如果是Windows系统可以用一个叫<code>Universal USB Installer</code>的软件，Mac系统则是用命令行<code>dd</code>命令。这里我用的是Mac命令行方式。</p>
+<h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><ol>
+<li>首先当然是去<a href="https://www.ubuntu.com/download" target="_blank" rel="external">官网</a>下载ISO镜像文件</li>
+<li>然后使用<code>hditutil</code>命令把.iso文件转换成.dmg文件</li>
+<li>插入U盘，先<code>diskutil list</code>查看你的U盘是哪个，然后<code>diskutil unmountDisk</code>卸载掉你的U盘。</li>
+<li>使用<code>dd</code>命令烧录U盘，完成后弹出U盘</li>
+</ol>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd Downloads  </div><div class="line">hdiutil convert -format UDRW -o ubuntu-16.04-desktop-amd64.img ubuntu-16.04-desktop-amd64.iso</div></pre></td></tr></table></figure>
+<p>其中<code>ubuntu-16.04-desktop-amd64.iso</code>是之前下载的文件，<code>ubuntu-16.04-desktop-amd64.img</code>是要生成的文件，会自动在后面加上<code>.dmg</code>。</p>
+<img src="/2017/02/02/U盘安装Ubuntu笔记：原理-实践/1.png" alt="hdiutil" title="hdiutil">
+<p>接下来插入U盘，运行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">diskutil list</div></pre></td></tr></table></figure></p>
+<p>找到你的U盘的名字。</p>
+<img src="/2017/02/02/U盘安装Ubuntu笔记：原理-实践/2.png" alt="2.png" title="">
+<p>这里我的U盘显然是最后一行的KINGSTON, 它的名字是<code>/dev/desk2</code>。然后把U盘卸载掉（unmount）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">diskutil unmountDisk /dev/disk2</div></pre></td></tr></table></figure></p>
+<img src="/2017/02/02/U盘安装Ubuntu笔记：原理-实践/3.png" alt="3.png" title="">
+<p>最后也是最重要的一步，烧录。这一步会等待大概5分钟吧。注意把<code>/dev/disk2</code>换成了<code>/dev/rdisk2</code>，这是为了写入更快。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo dd if=ubuntu-16.04-desktop-amd64.img.dmg of=/dev/rdisk2 bs=1m</div></pre></td></tr></table></figure></p>
+<img src="/2017/02/02/U盘安装Ubuntu笔记：原理-实践/4.png" alt="4.png" title="">
+<p>成功之后弹出U盘即可。</p>
+<h2 id="安装Ubuntu"><a href="#安装Ubuntu" class="headerlink" title="安装Ubuntu"></a>安装Ubuntu</h2><p>插上U盘，开机启动时狂按F12进入BIOS（不同的笔记本进入BIOS方式不同，开机画面上一般有提示），选择从USB启动<br><img src="/2017/02/02/U盘安装Ubuntu笔记：原理-实践/install/1.jpg" alt="install/1.jpg" title=""></p>
+<p>欢迎界面。如果想先尝试一下选择<code>Try Ubuntu</code>，如果想直接安装选择<code>Install Ubuntu</code>。<br><img src="/2017/02/02/U盘安装Ubuntu笔记：原理-实践/install/2.jpg" alt="install/2.jpg" title=""></p>
+<p>继续<br><img src="/2017/02/02/U盘安装Ubuntu笔记：原理-实践/install/3.jpg" alt="install/3.jpg" title=""></p>
+<p>根据大量google得到的结论，此处应该选最后一个<code>其它选项</code>，然后自己手动设置分区。不过我的情况特殊，之前在这台电脑上各种折腾win10，最后恢复出厂设置时彻底给折腾废了。所以我直接选了<code>清除整个磁盘并安装Ubuntu</code>。<br><img src="/2017/02/02/U盘安装Ubuntu笔记：原理-实践/install/4.jpg" alt="install/4.jpg" title=""></p>
+<p>继续，选择时区<br><img src="/2017/02/02/U盘安装Ubuntu笔记：原理-实践/install/5.jpg" alt="install/5.jpg" title=""></p>
+<p>选择键盘布局<br><img src="/2017/02/02/U盘安装Ubuntu笔记：原理-实践/install/6.jpg" alt="install/6.jpg" title=""></p>
+<p>设置用户密码<br><img src="/2017/02/02/U盘安装Ubuntu笔记：原理-实践/install/7.jpg" alt="install/7.jpg" title=""></p>
+<p>等待10分钟左右<br><img src="/2017/02/02/U盘安装Ubuntu笔记：原理-实践/install/8.jpg" alt="install/8.jpg" title=""></p>
+<p>安装成功，重启<br><img src="/2017/02/02/U盘安装Ubuntu笔记：原理-实践/install/9.jpg" alt="install/9.jpg" title=""></p>
+<p>登录界面<br><img src="/2017/02/02/U盘安装Ubuntu笔记：原理-实践/install/10.jpg" alt="install/10.jpg" title=""></p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p><a href="http://blog.csdn.net/mydo/article/details/41827597" target="_blank" rel="external">在Mac中使用「dd」指令烧录ISO镜像文件到U盘</a><br><a href="https://blog.gtwang.org/mac-os-x/create-a-ubuntu-linux-usb-stick-on-mac-osx/" target="_blank" rel="external">在 Mac OS X 中製作用來安裝 Ubuntu Linux 的 USB 隨身碟</a><br><a href="https://segmentfault.com/a/1190000006835642" target="_blank" rel="external">Mac OS制作Ubuntu安装U盘</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        
+	<div id="comment">
+	
+	<!-- 多说评论框 start -->
+	 <div class="ds-thread" data-thread-key="/2017/02/02/U盘安装Ubuntu笔记：原理-实践/" data-title="U盘安装Ubuntu笔记：原理&实践" data-url="http://yoursite.com/2017/02/02/U盘安装Ubuntu笔记：原理-实践/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"iTimeTraveler"};
+	  (function() {
+	    var ds = document.createElement('script');
+	    ds.type = 'text/javascript';ds.async = true;
+	    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+	    ds.charset = 'UTF-8';
+	    (document.getElementsByTagName('head')[0] 
+	     || document.getElementsByTagName('body')[0]).appendChild(ds);
+	  })();
+	  </script>
+	<!-- 多说公共JS代码 end -->
+	
+	</div>
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/我爱折腾/">我爱折腾</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/12/27/BP神经网络的R语言实现/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">BP神经网络的R语言实现</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Inhalt</strong>
+    
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Intro"><span class="toc-number">1.</span> <span class="toc-text">Intro</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#制作Ubuntu安装U盘（Mac命令行方式）"><span class="toc-number">2.</span> <span class="toc-text">制作Ubuntu安装U盘（Mac命令行方式）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#步骤"><span class="toc-number">2.1.</span> <span class="toc-text">步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#代码"><span class="toc-number">2.2.</span> <span class="toc-text">代码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装Ubuntu"><span class="toc-number">3.</span> <span class="toc-text">安装Ubuntu</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考文献"><span class="toc-number">4.</span> <span class="toc-text">参考文献</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      <div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2016 - 2017 JiaRu&#39;s blog All Rights Reserved.</p>
+	      <p id="copyRightCn">JiaRu hält Urheberrechtsansprüche.</p>
+	</div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            JiaRu&#39;s blog
+          </div>
+          <div class="panel-body">
+            Copyright © 2017 JiaRu All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="custom_mathjax_source">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+</body>
+</html>
